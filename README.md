@@ -34,7 +34,7 @@ const greenIcon = new L.Icon({
 - shadowUrl 是圖標陰影
 - iconSize 是圖標大小
 
-參考資料 [leaflet-color-markers](https://github.com/pointhi/leaflet-color-markers)
+_參考資料:_ [leaflet-color-markers](https://github.com/pointhi/leaflet-color-markers)
 
 
 ### 加入圖層
@@ -129,6 +129,8 @@ _溫馨提示:_ 使用 `map` 做迴圈要加 `return` 唷 !
 
 把圖標加入群組
 `group.addLayer(marker)`
+
+參考資料: [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
 
 ### 移除圖層
 
