@@ -155,7 +155,7 @@ map.removeLayer(group)
 map.removeLayer(osm)
 ```
 
-**移除所有圖標**
+移除所有圖標
 ```
 map.eachLayer(layer => {
   if (layer instanceof L.marker) {
