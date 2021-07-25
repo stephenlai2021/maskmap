@@ -242,7 +242,7 @@ export default {
 <style lang="scss" scoped>
 #map {
   position: fixed;
-  top: 100px;
+  top: 50px;
   width: 100%;
   height: 100vh;
 }

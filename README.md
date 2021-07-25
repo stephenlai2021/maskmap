@@ -15,7 +15,7 @@ const map = L.map(map).setView([lat, lng], zoom)
 const map = L.map((map), { cetner: [lat, lng], zoom })
 ```
 
-- 我們把地圖綁定到 id 為 map 的 dom 元素並指派給 `map` 這個變數, 這個動作只需要做一次, 這個專案我是用 __quasar__, 用以上的方式會報錯, 必須在 L.map() 指定 dom 元素, 要這樣 
+- 我們把地圖綁定到 id 為 map 的 dom 元素並指派給 `map` 這個變數, 這個動作只需要做一次, 這個專案我用 __quasar__ 開發, 用以上的方式會報錯, 必須在 `L.map()` 指定 dom 元素, 要這樣 
 ```
 const map = L.map(document.getElementById('map')).setView([lat, lng], zoom) /
 const map = L.map(document.getElementById('map'), { cetner: [lat, lng], zoom })
