@@ -6,7 +6,7 @@
   "author": "stephenlaichaowen <stephenlaitest@gmail.com>",
   "private": true,
   "scripts": {
-    "push": "git add . && git commit -m commit && git push orign master"
+    "push": "git add . && git commit -m commit && git push origin master"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
