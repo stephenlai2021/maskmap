@@ -1,14 +1,15 @@
 # 使用 leaftletjs 和 Open Street Map 開發口罩地圖
 
-### 首先建立 (初始化) 一個地圖, 我們把
+### 首先建立 (初始化) 一個地圖
 
+在模板內增加一個 `#map`
 ```
 <template>
   <div id="map"></div>
 </template>
 ```
 
-有兩種方式
+新增一個地圖, 有兩種方式
 
 1. const map = L.map(map).setView([lat, lng], zoom)
 2. const map = L.map((map), { cetner: [lat, lng], zoom })
@@ -22,12 +23,14 @@
 
 第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方法
 
-1. const marker = L.marker([lat, lng], { icon }).bindPoupu('哈囉').openPopup()
-2. const marker = L.marker(new L.LatLng(lat, lng), { icon }).bindPopup('哈囉').openPopup()
+1. const marker = L.marker([lat, lng], { icon })
+     .bindPoupu('哈囉')
+     .openPopup()
+2. const marker = L.marker(new L.LatLng(lat, lng), { icon })    .bindPopup('哈囉')
 
 - { iocn } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
 - bindPopup() 是彈跳視窗, 我們可以放入點擊圖標後想讓用戶看到的信息, 比如經緯度, 商店名稱等
-- 加入 openPopup() 預設開啟視窗, 移除這行預設不會開啟視窗
+- openPopup() 預設開啟視窗, 移除這行預設不會開啟視窗
 
 **再來就是把圖層加入地圖**
 
