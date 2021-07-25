@@ -1,0 +1,30 @@
+// app global css in SCSS form
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.my-card {
+  margin: 10px 15px 1.5rem 15px;
+  padding-bottom: .5rem;
+  padding-top: -.2rem;
+
+  .btn-group {
+    // border: 1px solid red;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 40px;
+    // margin-bottom: 1rem;
+
+    .mask-amount {
+      // border: 1px solid white;
+      width: 40%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
