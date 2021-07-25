@@ -80,7 +80,7 @@ maxZoom: 18,
 
 - 取名 osm 是因為我們用的是 Open Street Map
 
-- 不要忘記加入地圖, `addTo(map)` 或者用 `map.addLayer(osm)` 也行
+- 不要忘記把圖資加入地圖, `addTo(map)` 或者用 `map.addLayer(osm)` 也行
 
 執行以上三個動作我們就可以在地圖中心點上看到開啟的紅色圖標
 
@@ -103,7 +103,7 @@ const stores = [
 ]
 ```
 
-我們要在地圖上標示這10家圖標, 可以用迴圈的方式(forEach, map 等)
+我們要在地圖上標示這10家圖標, 可以用迴圈的方式(_forEach_, _map_ 等)
 
 使用 forEach
 ```
@@ -121,7 +121,7 @@ stores.map(item => {
 })
 ```
 
-溫馨提示: 使用 _map_ 做迴圈要加 _return_ 唷 !
+溫馨提示: 使用 `map` 做迴圈要加 `return` 唷 !
 
 #### 如果圖標有很多, 比如好幾千甚至上萬, 我們可以把圖標加入群組
 
@@ -171,15 +171,15 @@ map.eachLayer(layer => {
 
 **切換到不同中心點, 有三種方法可以使用**
 
-- 我們可以用 `setView` 來指定新的中心點, 例如
-`map.setView([新的緯度, 新的經度], zoom)`
-- 也可以用 `panTo`, 例如 `map.panTo([新的緯度, 新的經度])`
-- 還可以用 `flyTo`, 例如 `map.flyTo([新的緯度, 新的經度])`
+- 我們可以用 _setVie_ 來指定新的中心點, 例如
+_map.setView([新的緯度, 新的經度], zoom)_
+- 也可以用 _panTo_, 例如 _map.panTo([新的緯度, 新的經度])_
+- 還可以用 _flyTo_, 例如 _map.flyTo([新的緯度, 新的經度])_
 
 這三種用法的差異:
-- 我們可以在 `setView` 指定縮放比例
-- 使用 `flyTo` 可以產生漸變動畫
-- 使用 `panTo` 沒有漸變效果, 也不能指定縮放比例
+- 我們可以在 _setView_ 指定縮放比例
+- 使用 _flyTo_ 可以產生漸變動畫
+- 使用 _panTo_ 沒有漸變效果, 也不能指定縮放比例
 
 
 
