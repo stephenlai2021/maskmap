@@ -27,7 +27,8 @@ __第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方�
 1. const marker = L.marker([lat, lng], { icon })
      .bindPoupu('哈囉')
      .openPopup()
-2. const marker = L.marker(new L.LatLng(lat, lng), { icon })    .bindPopup('哈囉')
+2. const marker = L.marker(new L.LatLng(lat, lng), { icon })
+      .bindPopup('哈囉')
 ```
 
 - { icon } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
@@ -37,10 +38,10 @@ __第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方�
 **再來就是把圖層加入地圖**
 
 - 我們可以在 marker 後面接 .addTo(), 或者用 addLayer 這個方法
-
-- L.marker([lat, lng], { icon }).addTo(map)
-- marker.addTo(map)
-- map.addLayer(marker)
+```
+L.marker([lat, lng], { icon }).addTo(map) / marker.addTo(map)
+map.addLayer(marker)
+```
 
 這兩種方法都行, 端看開發者的喜好, 我個人偏好 addTo(), 因為只需要一行代碼, 用 addLayer() 就要多一行代碼
 
