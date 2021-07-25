@@ -15,8 +15,8 @@ const map = L.map(map).setView([lat, lng], zoom)
 const map = L.map((map), { cetner: [lat, lng], zoom })
 ```
 
-- 我們把 map 綁定 id 為 map 的 dom 元素, 這個動作只需要做一次
-- 設定中心點和縮放比例, 可以用 setView 這個方法或在 {} 內設置
+- 我們把地圖綁定到 id 為 map 的 dom 元素並指派給 `map` 這個變數, 這個動作只需要做一次
+- 設定中心點和縮放比例, 可以用 `setView()` 這個方法或在 `{ }` 內設置
 
 ---
 
@@ -46,16 +46,16 @@ const greenIcon = new L.Icon({
 
 __第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方法__
 ```
-1. const marker = L.marker([lat, lng], { icon })
+1. const marker = L.marker([lat, lng], { icon = greenIcon })
      .bindPoupu('哈囉')
      .openPopup()
-2. const marker = L.marker(new L.LatLng(lat, lng), { icon })
+2. const marker = L.marker(new L.LatLng(lat, lng), { icon = greenIcon })
      .bindPopup('哈囉')
 ```
 
-- { icon } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
-- bindPopup() 是彈跳視窗, 我們可以放入點擊圖標後想讓用戶看到的信息, 比如經緯度, 商店名稱等
-- openPopup() 預設開啟視窗, 移除這行預設不會開啟視窗
+- `{ icon }` 是 optional, 如果我們有客製化的 icon, 可以加在 `{ icon }` 內, 這個範例我們使用客製化的圖標(綠色圖標)
+- `bindPopup()` 是彈跳視窗, 我們可以放入點擊圖標後想讓用戶看到的信息, 比如經緯度, 商店名稱等
+- `openPopup()` 預設開啟視窗, 移除這行預設不會開啟視窗
 
 **再來就是把圖層加入地圖**
 
