@@ -34,7 +34,7 @@ const greenIcon = new L.Icon({
 - shadowUrl 是圖標陰影
 - iconSize 是圖標大小
 
-_參考資料:_ [leaflet-color-markers](https://github.com/pointhi/leaflet-color-markers)
+參考資料: [leaflet-color-markers](https://github.com/pointhi/leaflet-color-markers)
 
 
 ### 加入圖層
