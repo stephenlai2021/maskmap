@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-btn @click="toggleLocation" label="remove me" />
-    <q-btn @click="removeStores" label="remove stores" />
+    <!-- <q-btn @click="toggleLocation" label="remove me" />
+    <q-btn @click="removeStores" label="remove stores" /> -->
     <div id="map" :style="{ left: store.state.drawer ? '150px' : '0px' }"></div>
   </div>
 </template>
