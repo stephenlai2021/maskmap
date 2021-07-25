@@ -28,7 +28,7 @@ __第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方�
      .bindPoupu('哈囉')
      .openPopup()
 2. const marker = L.marker(new L.LatLng(lat, lng), { icon })
-      .bindPopup('哈囉')
+     .bindPopup('哈囉')
 ```
 
 - { icon } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
@@ -37,13 +37,13 @@ __第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方�
 
 **再來就是把圖層加入地圖**
 
-- 我們可以在 marker 後面接 .addTo(), 或者用 addLayer 這個方法
+我們可以在 marker 後面接 `addTo()`, 或者用 `addLayer()` 這個方法
 ```
 L.marker([lat, lng], { icon }).addTo(map) / marker.addTo(map)
 map.addLayer(marker)
 ```
 
-這兩種方法都行, 端看開發者的喜好, 我個人偏好 addTo(), 因為只需要一行代碼, 用 addLayer() 就要多一行代碼
+這兩種方法都行, 端看開發者的喜好, 我個人偏好 `addTo()`, 因為只需要一行代碼, 用 addLayer() 就要多一行代碼
 
 **然後載入圖資**
 ```
@@ -83,7 +83,7 @@ const stores = [
 ]
 ```
 
-我們要在地圖上標示這10家圖標, 可以用迴圈的方式(forEach, map等)
+我們要在地圖上標示這10家圖標, 可以用迴圈的方式(forEach, map 等)
 
 使用 forEach
 ```
@@ -106,10 +106,10 @@ _溫馨提示:_ 使用 `map` 做迴圈要加 `return` 唷 !
 #### 如果圖標有很多, 比如好幾千甚至上萬, 我們可以把圖標加入群組
 
 增加一個群駔, 順便把群組加入地圖
-- `const group = L.markerClusterGroup().addTo(map)`
+`const group = L.markerClusterGroup().addTo(map)`
 
 把圖標加入群組
-- group.addLayer(marker)
+`group.addLayer(marker)`
 
 ### 移除圖層
 
@@ -142,9 +142,9 @@ map.eachLayer(layer => {
 **切換到不同中心點, 有三種方法可以使用**
 
 - 我們可以用 `setView` 來指定新的中心點, 例如
-`map.setView([新的緯度, 新的精度], zoom)`
-- 也可以用 `panTo`, 例如 `map.panTo([新的緯度, 新的精度])`
-- 還可以用 `flyTo`, 例如 `map.flyTo([新的緯度, 新的精度])`
+`map.setView([新的緯度, 新的經度], zoom)`
+- 也可以用 `panTo`, 例如 `map.panTo([新的緯度, 新的經度])`
+- 還可以用 `flyTo`, 例如 `map.flyTo([新的緯度, 新的經度])`
 
 這三種用法的差異:
 - 我們可以在 `setView` 指定縮放比例
