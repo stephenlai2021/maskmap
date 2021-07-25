@@ -18,6 +18,8 @@ const map = L.map((map), { cetner: [lat, lng], zoom })
 - 我們把 map 綁定 id 為 map 的 dom 元素, 這個動作只需要做一次
 - 設定中心點和縮放比例, 可以用 setView 這個方法或在 {} 內設置
 
+---
+
 ### 客製化圖標
 ```
 const greenIcon = new L.Icon({
@@ -36,6 +38,7 @@ const greenIcon = new L.Icon({
 
 參考資料: [leaflet-color-markers](https://github.com/pointhi/leaflet-color-markers)
 
+---
 
 ### 加入圖層
 
@@ -80,8 +83,6 @@ maxZoom: 18,
 - 不要忘記加入地圖, `addTo(map)` 或者用 `map.addLayer(osm)` 也行
 
 執行以上三個動作我們就可以在地圖中心點上看到開啟的紅色圖標
-
----
 
 **如果有很多圖標, 我們可以用陣列迴圈的方式插圖標**
 
@@ -136,6 +137,8 @@ group.addLayer(marker)
 
 參考資料: [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
 
+---
+
 ### 移除圖層
 
 **如果要移除圖層, 用 _removeLayer()_ 這個方法**
@@ -163,6 +166,8 @@ map.eachLayer(layer => {
   }
 })
 ```
+
+---
 
 **切換到不同中心點, 有三種方法可以使用**
 
