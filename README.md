@@ -19,8 +19,6 @@ const map = L.map((map), { cetner: [lat, lng], zoom })
 - 設定中心點和縮放比例, 可以用 setView 這個方法或在 {} 內設置
 
 ### 客製化圖標
-
-範例
 ```
 const greenIcon = new L.Icon({
   iconUrl: "/marker/marker-icon-2x-green.png",
