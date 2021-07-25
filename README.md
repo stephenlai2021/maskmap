@@ -120,7 +120,7 @@ stores.map(item => {
 })
 ```
 
-_溫馨提示:_ 使用 `map` 做迴圈要加 `return` 唷 !
+溫馨提示: 使用 _map_ 做迴圈要加 _return_ 唷 !
 
 #### 如果圖標有很多, 比如好幾千甚至上萬, 我們可以把圖標加入群組
 
@@ -138,7 +138,7 @@ group.addLayer(marker)
 
 ### 移除圖層
 
-**如果要移除圖層, 用 removeLayer() 這個方法**
+**如果要移除圖層, 用 _removeLayer()_ 這個方法**
 
 移除圖標 (marker)
 ```
