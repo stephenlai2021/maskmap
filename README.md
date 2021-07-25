@@ -18,9 +18,30 @@ const map = L.map((map), { cetner: [lat, lng], zoom })
 - 我們把 map 綁定 id 為 map 的 dom 元素, 這個動作只需要做一次
 - 設定中心點和縮放比例, 可以用 setView 這個方法或在 {} 內設置
 
+### 客製化圖標
+
+範例
+```
+const greenIcon = new L.Icon({
+  iconUrl: "/marker/marker-icon-2x-green.png",
+  shadowUrl: "/marker/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+```
+
+- iconUrl 是圖標圖片
+- shadowUrl 是圖標陰影
+- iconSize 是圖標大小
+
+_參考資料_ [](https://github.com/pointhi/leaflet-color-markers)
+
+
 ### 加入圖層
 
-圖層可以是 UI Layer, 泛指圖標(marker) 或圖標群組(markerclustergroup), 也可以是 Tile Layer(圖資), 這個專案我們用 Open Street Map 作為圖資. _圖層可以加入或移除_
+圖層可以是 UI Layer, 泛指圖標(marker) 或圖標群組(markerclustergroup), 也可以是 Tile Layer(圖資), 這個專案我們用 Open Street Map 作為圖資. _<圖層可以加入或移除>_
 
 __第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方法__
 ```
