@@ -103,9 +103,9 @@ const stores = [
 ]
 ```
 
-我們要在地圖上標示這10家圖標, 可以用迴圈的方式(_forEach_, _map_ 等)
+我們要在地圖上標示這10家圖標, 可以用迴圈的方式(`forEach`, `map` 等)
 
-使用 forEach
+使用 _forEach_
 ```
 stores.forEach(item => {
   L.marker([item.lat, item.lng])
@@ -113,7 +113,7 @@ stores.forEach(item => {
 })
 ```
 
-使用 map 
+使用 _map_ 
 ```
 stores.map(item => {
   return L.marker([item.lat, item.lng])
@@ -171,15 +171,15 @@ map.eachLayer(layer => {
 
 **切換到不同中心點, 有三種方法可以使用**
 
-- 我們可以用 _setVie_ 來指定新的中心點, 例如
-_map.setView([新的緯度, 新的經度], zoom)_
-- 也可以用 _panTo_, 例如 _map.panTo([新的緯度, 新的經度])_
-- 還可以用 _flyTo_, 例如 _map.flyTo([新的緯度, 新的經度])_
+- 我們可以用 `setView` 來指定新的中心點, 例如
+`map.setView([新的緯度, 新的經度], zoom)`
+- 也可以用 `panTo`, 例如 `map.panTo([新的緯度, 新的經度])`
+- 還可以用 `flyTo`, 例如 `map.flyTo([新的緯度, 新的經度])`
 
 這三種用法的差異:
-- 我們可以在 _setView_ 指定縮放比例
-- 使用 _flyTo_ 可以產生漸變動畫
-- 使用 _panTo_ 沒有漸變效果, 也不能指定縮放比例
+- 我們可以在 `setView` 指定縮放比例
+- 使用 `flyTo` 可以產生漸變動畫
+- 使用 `panTo` 沒有漸變效果, 也不能指定縮放比例
 
 
 
