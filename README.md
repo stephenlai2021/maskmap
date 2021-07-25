@@ -19,7 +19,7 @@
 
 ### 加入圖層
 
-圖層可以是 UI Layer, 泛指圖標(marker)或圖標群組(markerclustergroup) 也可以是 Tile Layer(圖資), 這個專案我們用 Open Street Map. 圖層可以加入或移除
+圖層可以是 UI Layer, 泛指圖標(marker)或圖標群組(markerclustergroup) 也可以是 Tile Layer(圖資), 這個專案我們用 Open Street Map 作為圖資. __圖層可以加入或移除__
 
 第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方法
 
@@ -28,7 +28,7 @@
      .openPopup()
 2. const marker = L.marker(new L.LatLng(lat, lng), { icon })    .bindPopup('哈囉')
 
-- { iocn } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
+- { icon } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
 - bindPopup() 是彈跳視窗, 我們可以放入點擊圖標後想讓用戶看到的信息, 比如經緯度, 商店名稱等
 - openPopup() 預設開啟視窗, 移除這行預設不會開啟視窗
 
@@ -43,6 +43,7 @@
 這兩種方法都行, 端看開發者的喜好, 我個人偏好 addTo(), 因為只需要一行代碼, 用 addLayer() 就要多一行代碼
 
 **然後載入圖資**
+```
 const osm = L.tileLayer(
 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 {
@@ -50,12 +51,15 @@ attribution:
 '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 maxZoom: 18,
 }).addTo(map)
+```
 
 - 取名 osm 是因為我們用的是 Open Street Map
 
 - 不要忘記加入地圖, `addTo(map)` 或者用 `map.addLayer(osm)` 也行
 
 執行以上三個動作我們就可以在地圖中心點上看到開啟的紅色圖標
+
+---
 
 **如果有很多圖標, 我們可以用陣列迴圈的方式插圖標**
 
@@ -94,7 +98,7 @@ stores.map(item => {
 })
 ```
 
-__溫馨提示:__ 使用 `map` 做迴圈要加 `return` 唷 !
+_溫馨提示:_ 使用 `map` 做迴圈要加 `return` 唷 !
 
 #### 如果圖標有很多, 比如好幾千甚至上萬, 我們可以把圖標加入群組
 
@@ -143,7 +147,7 @@ map.eachLayer(layer => {
 - 我們可以在 `setView` 指定縮放比例
 - 使用 `flyTo` 可以產生漸變動畫
 - 使用 `panTo` 沒有漸變效果, 也不能指定縮放比例
-- 
+
 
 
 
