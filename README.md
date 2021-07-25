@@ -9,24 +9,26 @@
 </template>
 ```
 
-新增一個地圖, 有兩種方式
-
-1. const map = L.map(map).setView([lat, lng], zoom)
-2. const map = L.map((map), { cetner: [lat, lng], zoom })
+**新增一個地圖, 有兩種方式**
+```
+const map = L.map(map).setView([lat, lng], zoom)
+const map = L.map((map), { cetner: [lat, lng], zoom })
+```
 
 - 我們把 map 綁定 id 為 map 的 dom 元素, 這個動作只需要做一次
 - 設定中心點和縮放比例, 可以用 setView 這個方法或在 {} 內設置
 
 ### 加入圖層
 
-圖層可以是 UI Layer, 泛指圖標(marker)或圖標群組(markerclustergroup) 也可以是 Tile Layer(圖資), 這個專案我們用 Open Street Map 作為圖資. __圖層可以加入或移除__
+圖層可以是 UI Layer, 泛指圖標(marker) 或圖標群組(markerclustergroup), 也可以是 Tile Layer(圖資), 這個專案我們用 Open Street Map 作為圖資. _圖層可以加入或移除_
 
-第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方法
-
+__第二個步驟加入 UI Layer, 我們在中心點加入圖標, 有兩種方法__
+```
 1. const marker = L.marker([lat, lng], { icon })
      .bindPoupu('哈囉')
      .openPopup()
 2. const marker = L.marker(new L.LatLng(lat, lng), { icon })    .bindPopup('哈囉')
+```
 
 - { icon } 是 optional, 如果我們有客製化的 icon, 可以加在 { icon } 內
 - bindPopup() 是彈跳視窗, 我們可以放入點擊圖標後想讓用戶看到的信息, 比如經緯度, 商店名稱等
