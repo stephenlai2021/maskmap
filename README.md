@@ -1,10 +1,4 @@
-# Maskmap 口罩地圖
-
-/_ 增加圖標 _/
-// 第一種 L.marker([lat, lng], { icon }).bindPopup().openPopup()
-// 第二種 L.marker(new L.LatLng(lat, lng), { icon }).bindPopup().openPopup()
-
-\*\* 使用 leaftletjs 和 Open Street Map 開發口罩地圖
+# 使用 leaftletjs 和 Open Street Map 開發口罩地圖
 
 ### 首先建立 (初始化) 一個地圖, 我們把
 
