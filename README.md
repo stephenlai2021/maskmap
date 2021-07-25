@@ -125,10 +125,14 @@ _溫馨提示:_ 使用 `map` 做迴圈要加 `return` 唷 !
 #### 如果圖標有很多, 比如好幾千甚至上萬, 我們可以把圖標加入群組
 
 增加一個群駔, 順便把群組加入地圖
-`const group = L.markerClusterGroup().addTo(map)`
+```
+const group = L.markerClusterGroup().addTo(map)
+```
 
 把圖標加入群組
-`group.addLayer(marker)`
+```
+group.addLayer(marker)
+```
 
 參考資料: [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
 
