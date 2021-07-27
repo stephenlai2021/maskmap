@@ -38,12 +38,12 @@ export default {
     const getUserLocation = () => {
       console.log("user location: ", lat.value, lng.value);
 
-      map.value.setZoom(15);
-      map.value.panTo([lat.value, lng.value]);
-      L.marker([lat.value, lng.value], { icon: red.value })
-        .addTo(map.value)
-        .bindPopup("您在這裡")
-        .openPopup();
+      // map.value.setZoom(15);
+      // map.value.panTo([lat.value, lng.value]);
+      // L.marker([lat.value, lng.value], { icon: red.value })
+      //   .addTo(map.value)
+      //   .bindPopup("您在這裡")
+      //   .openPopup();
     };
 
     /* 方法 */
@@ -209,23 +209,15 @@ export default {
     watchEffect(() => {
       store.methods.getSelectedStores();
       console.log(
-        `map: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
+        `watch effect in map: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
       );
-
-      // Goto()
-
-      // updateMap()
-      // removeAllMarkers();
-      // map.value.removeLayer(areaStores.value)
-
-      // console.log("map: ", map.value);
 
       console.log("watch pharmacy in map: ", store.state.pharmacy);
     });
 
     onMounted(() => {
-      getUserLocation();
       initMap();
+      getUserLocation();
     });
 
     return {

@@ -195,7 +195,6 @@ export default {
     };
 
     const updateMap = () => {
-      // console.log('map updated')
       console.log(
         `layout: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
       );
