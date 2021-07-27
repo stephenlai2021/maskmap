@@ -157,8 +157,10 @@ export default {
       // store.state.lat = item.lat
       // store.state.lng = item.lng
       store.state.pharmacy = item
-
       console.log('pharmcy | store: ', store.state.pharmacy)
+
+      store.state.drawer = false
+      console.log('drawer state: ', store.state.drawer)
     }
 
     const setSelectedArea = () => {
