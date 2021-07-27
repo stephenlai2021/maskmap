@@ -89,16 +89,16 @@ export default {
     };
 
     const initMap = () => {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        lat.value = pos.coords.latitude;
-        lng.value = pos.coords.longitude;
+      // navigator.geolocation.getCurrentPosition((pos) => {
+      //   lat.value = pos.coords.latitude;
+      //   lng.value = pos.coords.longitude;
 
         map.value = L.map("map", {
           center: [lat.value, lng.value],
           zoom: zoom.value,
           maxZoom: 18,
         });
-      });
+      // });
 
       setIcon();
 
