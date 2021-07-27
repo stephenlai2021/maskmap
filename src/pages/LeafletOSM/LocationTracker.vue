@@ -7,17 +7,19 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, inject } from "vue";
 import { fireDB } from "src/boot/firebase";
 import firebase from "firebase/app";
 
 export default {
   setup() {
+    // geometry
     const lat = ref(null);
     const lng = ref(null);
+
+    // map & layer
     const map = ref(null);
     const marker = ref(null);
-    const markers = ref([]);
 
     const login = () => {
       fireDB
@@ -36,34 +38,21 @@ export default {
       fireDB
         .collection("ninjas")
         .doc("cat-the-ninja")
-        // .update({
-        //   geolocation: {
-        //     lat: null,
-        //     lng: null,
-        //   },
-        //   online: false,
-        // });
         .update({
-          geolocation: firebase.firestore.FieldValue.delete(),
-          online: firebase.firestore.FieldValue.delete(),
+          online: false,
         });
+        // 刪除欄位: geolocation, online 
+        // .update({
+        //   geolocation: firebase.firestore.FieldValue.delete(),
+        //   online: firebase.firestore.FieldValue.delete(),
+        // });
     };
 
-    onMounted(() => {
-      getAllNinjasGeolocation();
-    });
-
-    const getAllNinjasGeolocation = () => {
+    const initMap = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
-        // navigator.geolocation.watchPosition((pos) => {
           lat.value = pos.coords.latitude;
           lng.value = pos.coords.longitude;
-
-          const container = L.DomUtil.get("map");
-          if (container != null) {
-            container._leaflet_id = null;
-          }
 
           map.value = L.map("map", {
             center: [lat.value, lng.value],
@@ -81,6 +70,8 @@ export default {
             .onSnapshot((snap) => {
               console.log("snap | init: ", snap);
 
+              removeAllMarkers();
+
               snap.docs.map((doc) => {
                 marker.value = L.marker([
                   doc.data().geolocation.lat,
@@ -88,43 +79,26 @@ export default {
                 ])
                   .addTo(map.value)
                   .bindPopup(doc.data().alias)
-                  .openPopup();
+                  // .openPopup();
               });
             });
-
-          fireDB.collection("ninjas").onSnapshot((snap) => {
-            snap.docChanges().forEach((change) => {
-              if (
-                // change.type === "added" ||
-                // change.type === "removed" ||
-                change.type === "modified"
-              ) {
-                updateMap();
-              }
-            });
-          });
         });
       } else {
         console.log("Your browser does not support geolocation !");
       }
     };
 
-    const updateMap = fireDB
-      .collection("ninjas")
-      .where("online", "==", true)
-      .onSnapshot((snap) => {
-        console.log("snap | modified: ", snap);
-
-        snap.docs.map((doc) => {
-          marker.value = L.marker([
-            doc.data().geolocation.lat,
-            doc.data().geolocation.lng,
-          ])
-            .addTo(map.value)
-            .bindPopup(doc.data().alias)
-            .openPopup();
-        });
+    const removeAllMarkers = () => {
+      map.value.eachLayer((layer) => {
+        if (layer instanceof L.Marker) {
+          map.value.removeLayer(layer);
+        }
       });
+    };    
+
+    onMounted(() => {
+      initMap();
+    });
 
     return {
       login,

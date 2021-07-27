@@ -61,7 +61,7 @@
         </div>
 
         <div class="area-select">
-          <select v-model="store.state.selectedArea" class="bg-teal-2">
+          <select v-model="store.state.selectedArea" class="bg-teal-2" @change="updateMap">
             <option
               v-for="(area, idx) in filteredArea"
               :value="area.AreaName"
@@ -87,6 +87,7 @@
         </div>
       </div>
       <q-scroll-area class="area">
+        <!-- <div v-if="store.state.filteredStoreNo"> -->
         <div v-if="store.methods.getSelectedStores()">
           <div class="text-h5 text-center">
             找到 {{ store.state.filteredStoreNo }} 家藥局
@@ -98,7 +99,7 @@
             :key="idx"
           >
             <q-card-section>
-              <div class="text-h6 text-cyan-8" @click="getStore(store.name, store.lat, store.lng)">
+              <div class="text-h6 text-cyan-8 store-name" @click="getStore(store)">
                 {{ store.name }}
               </div>
               <div class="text-subtitle2 text-primary">
@@ -149,22 +150,15 @@ export default {
     const router = useRouter();
 
     const drawer = ref(false);
-
-    const selectedCity = ref("臺北市");
-    const selectedArea = ref("大安區");
-
     const data = ref([]);
 
-    const getStore = (name, lat, lng) => {
-      store.state.name = name
-      store.state.lat = lat
-      store.state.lng = lng
+    const getStore = (item) => {
+      // store.state.name = item.name
+      // store.state.lat = item.lat
+      // store.state.lng = item.lng
+      store.state.pharmacy = item
 
-      console.log(`
-        layout: ${name},
-        lat: ${lat},
-        lng: ${lng}
-      `)
+      console.log('pharmcy | store: ', store.state.pharmacy)
     }
 
     const setSelectedArea = () => {
@@ -189,11 +183,24 @@ export default {
       });
 
       return area;
+
+      // return cities.filter(item => {
+      //   return item.CityName === store.state.selectedCity && item.AreaList.filter(area => {
+      //     return area.AreaName === store.state.setSelectedArea
+      //   })
+      // })
     });
 
     const toggleDrawer = () => {
       store.state.drawer = !store.state.drawer;
     };
+
+    const updateMap = () => {
+      // console.log('map updated')
+      console.log(
+        `layout: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
+      );
+    }
 
     onMounted(() => {
       console.log('filtered area: ', filteredArea)
@@ -212,7 +219,8 @@ export default {
 
       setSelectedArea,
       toggleDrawer,
-      getStore
+      getStore,
+      updateMap,
     };
   },
 };
@@ -258,5 +266,8 @@ export default {
       outline: none;
     }
   }
+}
+.store-name {
+  cursor: pointer;
 }
 </style>

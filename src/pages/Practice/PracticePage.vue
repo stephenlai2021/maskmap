@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import useFetch from "../composables/useFetch";
+import useFetch from "../../composables/useFetch";
 import { computed, inject, onMounted } from "vue";
 
 export default {

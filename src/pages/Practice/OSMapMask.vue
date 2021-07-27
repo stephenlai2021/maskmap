@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <pre>{{ store.state.pharmacies }}</pre>
+    <pre>{{ store.methods.getSelectedStores() }}</pre>
 
     <div id="map"></div>
   </q-page>
@@ -54,14 +54,23 @@ export default {
       }
     };
 
+    const removeAllMarkers = () => {
+      map.value.eachLayer((layer) => {
+        if (layer instanceof L.Marker) {
+          map.value.removeLayer(layer);
+        }
+      });
+    };
+
     const updateMap = () => {
       // map.value.eachLayer(layer => {
       //   if (layer instanceof L.marker) {
       //     map.value.removeLayer(layer)
       //   }
       // })
+      // removeAllMarkers()
 
-      store.state.pharmacies.forEach((store) => {
+      store.methods.getSelectedStores().forEach((store) => {
         marker.value = L.marker([store.lat, store.lng])
           .addTo(map.value)
           .bindPopup(store.name)
@@ -74,7 +83,7 @@ export default {
     });
 
     onMounted(() => {
-      console.log("藥局資料: ", store.state.pharmacies);
+      console.log("藥局資料: ", store.methods.getSelectedStores());
       initMap();
     });
 

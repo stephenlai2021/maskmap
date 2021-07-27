@@ -113,10 +113,12 @@ const stores = [
 使用 _forEach_
 ```
 stores.forEach(item => {
-  L.marker([item.lat, item.lng])
+  const markers = L.marker([item.lat, item.lng])
   .bindPopup(item.name)  
 })
 ```
+
+- `store[]` 陣列用迴圈把經緯度插入所有圖標並指派給 `markers` 這個變數
 
 使用 _map_ 
 ```
@@ -137,7 +139,7 @@ const group = L.markerClusterGroup().addTo(map)
 
 把圖標加入群組
 ```
-group.addLayer(marker)
+group.addLayer(markers)
 ```
 
 參考資料: [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
@@ -148,9 +150,14 @@ group.addLayer(marker)
 
 **如果要移除圖層, 用 _removeLayer()_ 這個方法**
 
-移除圖標 (marker)
+移除一個圖標 (marker)
 ```
 map.removeLayer(marker)
+```
+
+移除多個圖標 (markers)
+```
+map.removeLayer(markers)
 ```
 
 移除群組 (group)

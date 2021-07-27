@@ -14,10 +14,7 @@ const state = reactive({
   selectedCity: "臺北市",
   selectedArea: "大安區",
 
-  // store relate
-  name: null,
-  lat: 0,
-  lng: 0,
+  pharmacy: {}
 });
 
 const methods = {
@@ -32,10 +29,11 @@ const methods = {
       });
   },
   filteredData() {
-    let id = 0
+    let id = 0;
     return state.api.filter((item, index) => {
       return (
-        item.properties.county === state.selectedCity && item.properties.town === state.selectedArea
+        item.properties.county === state.selectedCity &&
+        item.properties.town === state.selectedArea
       );
     });
   },
@@ -83,7 +81,19 @@ const methods = {
   },
 };
 
+const getters = {
+  filteredStores() {
+    return state.api.filter((item) => {
+      return (
+        item.properties.county === state.selectedCity &&
+        item.properties.town === state.selectedArea
+      );
+    });
+  },
+};
+
 export default {
   state,
   methods,
+  getters,
 };
