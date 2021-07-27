@@ -89,33 +89,33 @@ export default {
     };
 
     const initMap = () => {
-      // navigator.geolocation.getCurrentPosition((pos) => {
-      //   lat.value = pos.coords.latitude;
-      //   lng.value = pos.coords.longitude;
+      navigator.geolocation.getCurrentPosition((pos) => {
+        lat.value = pos.coords.latitude;
+        lng.value = pos.coords.longitude;
 
         map.value = L.map("map", {
           center: [lat.value, lng.value],
           zoom: zoom.value,
           maxZoom: 18,
         });
-      // });
 
-      setIcon();
+        setIcon();
 
-      me.value = L.marker([lat.value, lng.value], { icon: red.value })
-        .addTo(map.value)
-        .bindPopup("您的位置")
-        .openPopup();
+        me.value = L.marker([lat.value, lng.value], { icon: red.value })
+          .addTo(map.value)
+          .bindPopup("您的位置")
+          .openPopup();
 
-      group.value = L.markerClusterGroup();
-      addStores();
-      map.value.addLayer(group.value);
+        group.value = L.markerClusterGroup();
+        addStores();
+        map.value.addLayer(group.value);
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
-        maxZoom: 18,
-      }).addTo(map.value);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
+          maxZoom: 18,
+        }).addTo(map.value);
+      });
     };
 
     // 增加圖層 (我們可以過濾出想要的藥局, 包塊全省藥局, 城市藥局或區域藥局)

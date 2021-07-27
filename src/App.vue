@@ -25,8 +25,7 @@ export default {
 
     onMounted(() => {
       store.state.api = data;
-
-      // getUserLocation()
+      
       // fetchAPI()
     });
   },
