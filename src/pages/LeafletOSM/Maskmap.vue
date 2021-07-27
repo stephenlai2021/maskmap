@@ -43,10 +43,10 @@ export default {
         console.log("user location: ", lat.value, lng.value);
         map.value.setZoom(15);
         map.value.panTo([lat.value, lng.value]);
-        L.marker([lat.value, lng.value], { icon: red.value })
-          .addTo(map.value)
-          .bindPopup("您在這裡")
-          .openPopup();
+        // L.marker([lat.value, lng.value], { icon: red.value })
+        //   .addTo(map.value)
+        //   .bindPopup("您在這裡")
+        //   .openPopup();
       });
     };
 
