@@ -36,18 +36,14 @@ export default {
     const lng = ref(0);
 
     const getUserLocation = () => {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        lat.value = pos.coords.latitude;
-        lng.value = pos.coords.longitude;
+      console.log("user location: ", lat.value, lng.value);
 
-        console.log("user location: ", lat.value, lng.value);
-        map.value.setZoom(15);
-        map.value.panTo([lat.value, lng.value]);
-        L.marker([lat.value, lng.value], { icon: red.value })
-          .addTo(map.value)
-          .bindPopup("您在這裡")
-          .openPopup();
-      });
+      map.value.setZoom(15);
+      map.value.panTo([lat.value, lng.value]);
+      L.marker([lat.value, lng.value], { icon: red.value })
+        .addTo(map.value)
+        .bindPopup("您在這裡")
+        .openPopup();
     };
 
     /* 方法 */
@@ -89,33 +85,35 @@ export default {
     };
 
     const initMap = () => {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        lat.value = pos.coords.latitude;
-        lng.value = pos.coords.longitude;
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          lat.value = pos.coords.latitude;
+          lng.value = pos.coords.longitude;
 
-        map.value = L.map("map", {
-          center: [lat.value, lng.value],
-          zoom: zoom.value,
-          maxZoom: 18,
+          map.value = L.map("map", {
+            center: [lat.value, lng.value],
+            zoom: zoom.value,
+            maxZoom: 18,
+          });
+
+          setIcon();
+
+          me.value = L.marker([lat.value, lng.value], { icon: red.value })
+            .addTo(map.value)
+            .bindPopup("您的位置")
+            .openPopup();
+
+          group.value = L.markerClusterGroup();
+          addStores();
+          map.value.addLayer(group.value);
+
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+              '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
+            maxZoom: 18,
+          }).addTo(map.value);
         });
-
-        setIcon();
-
-        me.value = L.marker([lat.value, lng.value], { icon: red.value })
-          .addTo(map.value)
-          .bindPopup("您的位置")
-          .openPopup();
-
-        group.value = L.markerClusterGroup();
-        addStores();
-        map.value.addLayer(group.value);
-
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution:
-            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
-          maxZoom: 18,
-        }).addTo(map.value);
-      });
+      }
     };
 
     // 增加圖層 (我們可以過濾出想要的藥局, 包塊全省藥局, 城市藥局或區域藥局)
