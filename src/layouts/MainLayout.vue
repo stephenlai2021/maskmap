@@ -150,17 +150,14 @@ export default {
     const router = useRouter();
 
     const drawer = ref(false);
-    const data = ref([]);
+    const data = ref([]);   
 
     const getStore = (item) => {
-      // store.state.name = item.name
-      // store.state.lat = item.lat
-      // store.state.lng = item.lng
       store.state.pharmacy = item
       console.log('pharmcy | store: ', store.state.pharmacy)
 
-      store.state.drawer = false
-      console.log('drawer state: ', store.state.drawer)
+      // store.state.drawer = false
+      // console.log('drawer state: ', store.state.drawer)
     }
 
     const setSelectedArea = () => {
@@ -205,7 +202,7 @@ export default {
     }
 
     onMounted(() => {
-      console.log('filtered area: ', filteredArea)
+      // getUserLocation()
     });
 
     return {

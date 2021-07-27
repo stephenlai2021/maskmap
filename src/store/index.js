@@ -9,6 +9,9 @@ const state = reactive({
   storeNo: 0,
   stores: [],
 
+  lat: 0,
+  lng: 0,
+
   filteredStoreNo: 0,
 
   selectedCity: "臺北市",

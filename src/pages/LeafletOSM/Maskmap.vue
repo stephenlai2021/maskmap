@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-btn @click="toggleLocation" label="Go" />
-    <q-btn @click="removeStores" label="toggle stores" />
+    <q-btn @click="Goto" label="Go" />
+    <q-btn @click="getUserLocation" label="您的位置" />
     <div id="map" :style="{ left: store.state.drawer ? '150px' : '0px' }"></div>
   </div>
 </template>
@@ -27,23 +27,37 @@ export default {
     const icon = ref(null);
 
     /* 其他變數 */
-    const zoom = ref(15);
-    const storeShow = ref(true);
+    const zoom = ref(11);
 
     /* 台北市復興南路二段148巷10號 */
-    const lat = ref(25.028528);
-    const lng = ref(121.542954);
+    // const lat = ref(25.028528);
+    // const lng = ref(121.542954);
+    const lat = ref(0);
+    const lng = ref(0);
+
+    const getUserLocation = () => {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        lat.value = pos.coords.latitude;
+        lng.value = pos.coords.longitude;
+
+        console.log("user location: ", lat.value, lng.value);
+        map.value.setZoom(15);
+        map.value.panTo([lat.value, lng.value]);
+        L.marker([lat.value, lng.value], { icon: red.value })
+          .addTo(map.value)
+          .bindPopup("您在這裡")
+          .openPopup();
+      });
+    };
 
     /* 方法 */
-    const toggleLocation = () => {
+    const Goto = () => {
       console.log("get pharmcy in map: ", store.state.pharmacy);
 
-      // map.value.removeLayer(pharmacy.value);
+      // removeAllMarkers();
 
-      map.value.flyTo([store.state.pharmacy.lat, store.state.pharmacy.lng]);
-      // map.value.setZoom(18)
-
-      // map.value.setView([store.state.pharmacy.lat, store.state.pharmacy.lng], 15);
+      map.value.setZoom(18);
+      map.value.panTo([store.state.pharmacy.lat, store.state.pharmacy.lng]);
 
       pharmacy.value = L.marker([
         store.state.pharmacy.lat,
@@ -52,33 +66,100 @@ export default {
         .addTo(map.value)
         .bindPopup(
           `
-          <q-card-section>
-            <div class="text-h6 text-cyan-8">
-              ${store.state.pharmacy.name}
-            </div>
-            <div class="text-primary">
-              ${store.state.pharmacy.address} (${store.state.pharmacy.cunli})
-            </div>
-            <div class="text-primary q-mt-sm">
-              ${store.state.pharmacy.phone}
-            </div>
-          </q-card-section>
+            <q-card-section>
+              <div class="text-h6 text-cyan-8">
+                ${store.state.pharmacy.name}
+              </div>
+              <div class="text-primary">
+                ${store.state.pharmacy.address} (${store.state.pharmacy.cunli})
+              </div>
+              <div class="text-primary q-mt-sm">
+                ${store.state.pharmacy.phone}
+              </div>
+            </q-card-section>
 
-          <div class="q-mt-md flex justify-around q-py-sm rounded-borders">
-            <span class="text-cyan-8 text-h6">成人 ${store.state.pharmacy.maskAdult}</span>
-            <span class="text-cyan-8 text-h6">兒童 ${store.state.pharmacy.maskChild}</span>
-          </div>
+            <div class="q-mt-md flex justify-around q-py-sm rounded-borders">
+              <span class="text-cyan-8 text-h6">成人 ${store.state.pharmacy.maskAdult}</span>
+              <span class="text-cyan-8 text-h6">兒童 ${store.state.pharmacy.maskChild}</span>
+            </div>
 
-        `
+          `
         )
         .openPopup();
     };
 
-    const removeStores = () => {
-      storeShow.value = !storeShow.value;
+    const initMap = () => {
+      map.value = L.map("map", {
+        // center: [store.state.lat, store.state.lng],
+        center: [lat.value, lng.value],
+        zoom: zoom.value,
+        maxZoom: 18,
+      });
 
-      if (storeShow.value) map.value.addLayer(group.value);
-      if (!storeShow.value) map.value.removeLayer(group.value);
+      setIcon();
+
+      me.value = L.marker([lat.value, lng.value], { icon: red.value })
+        .addTo(map.value)
+        .bindPopup("您的位置")
+        .openPopup();
+
+      group.value = L.markerClusterGroup();
+      addStores();
+      map.value.addLayer(group.value);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
+        maxZoom: 18,
+      }).addTo(map.value);
+    };
+
+    // 增加圖層 (我們可以過濾出想要的藥局, 包塊全省藥局, 城市藥局或區域藥局)
+    const addStores = () => {
+      store.state.api.map((item) => {
+        if (
+          item.properties.mask_adult <= 200 ||
+          item.properties.mask_child <= 200
+        ) {
+          icon.value = grey.value;
+        } else {
+          icon.value = green.value;
+        }
+        // 濾出區域藥局
+        if (
+          item.properties.county === store.state.selectedCity &&
+          item.properties.town === store.state.selectedArea
+        ) {
+          // return (stores.value = (L.marker(
+          return L.marker(
+            [item.geometry.coordinates[1], item.geometry.coordinates[0]],
+            { icon: icon.value }
+          )
+            .addTo(map.value)
+            .bindPopup(
+              `
+              <q-card-section>
+                <div class="text-h6 text-cyan-8">
+                  ${item.properties.name}
+                </div>
+                <div class="text-subtitle2 text-primary">
+                  ${item.properties.address} (${item.properties.cunli})
+                </div>
+                <div class="text-subtitle2 text-primary q-mt-sm">
+                  ${item.properties.phone}
+                </div>
+              </q-card-section>
+
+              <div class="q-mt-md flex justify-around q-py-sm rounded-borders">
+                <span class="text-cyan-8 text-h6">成人 ${item.properties.mask_adult}</span>
+                <span class="text-cyan-8 text-h6">兒童 ${item.properties.mask_child}</span>
+              </div>
+
+            `
+            );
+        }
+      });
+      // .forEach((item) => group.value.addLayer(item));
     };
 
     const setIcon = () => {
@@ -118,92 +199,6 @@ export default {
       });
     };
 
-    const initMap = () => {
-      // 增加地圖
-      // map.value = L.map(document.getElementById("map")).setView(
-      map.value = L.map("map", {
-        center: [lat.value, lng.value],
-        zoom: zoom.value,
-      });
-
-      // 引入客製化圖標
-      setIcon();
-
-      // 增加圖層 (用戶)
-      me.value = L.marker([lat.value, lng.value], { icon: red.value })
-        .addTo(map.value)
-        .bindPopup("您的位置");
-      // .openPopup();
-
-      // 增加圖層
-      // 加入區域藥局
-
-      addStores()
-
-      // 加入全省藥局, 縮小比例
-      // addAllStores()
-      // map.value.setZoom(8)
-
-      // 移除所有圖標
-      // removeAllMarkers()
-
-      // 增加圖層 (Open Streen Map)
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>         contributors',
-        maxZoom: 18,
-      }).addTo(map.value);
-    };
-    
-    // 增加圖層 (我們可以過濾出想要的藥局, 包塊全省藥局, 城市藥局或區域藥局)
-    const addStores = () => {
-      store.state.api.map((item) => {
-        if (
-          item.properties.mask_adult <= 200 ||
-          item.properties.mask_child <= 200
-        ) {
-          icon.value = grey.value;
-        } else {
-          icon.value = green.value;
-        }
-        // 濾出區域藥局
-        if (
-          item.properties.county === store.state.selectedCity &&
-          item.properties.town === store.state.selectedArea
-        ) {
-          return (stores.value = L.marker(
-            // return (L.marker(
-            [item.geometry.coordinates[1], item.geometry.coordinates[0]],
-            { icon: icon.value }
-          )
-            .addTo(map.value)
-            .bindPopup(
-              `
-              <q-card-section>
-                <div class="text-h6 text-cyan-8">
-                  ${item.properties.name}
-                </div>
-                <div class="text-subtitle2 text-primary">
-                  ${item.properties.address} (${item.properties.cunli})
-                </div>
-                <div class="text-subtitle2 text-primary q-mt-sm">
-                  ${item.properties.phone}
-                </div>
-              </q-card-section>
-
-              <div class="q-mt-md flex justify-around q-py-sm rounded-borders">
-                <span class="text-cyan-8 text-h6">成人 ${item.properties.mask_adult}</span>
-                <span class="text-cyan-8 text-h6">兒童 ${item.properties.mask_child}</span>
-              </div>
-
-            `
-            )
-            // .openPopup()
-          );
-        }
-      });
-    };
-    
     const updateMap = () => {
       removeAllMarkers();
       addAreaStores();
@@ -215,7 +210,7 @@ export default {
         `map: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
       );
 
-      // toggleLocation()
+      // Goto()
 
       // updateMap()
       // removeAllMarkers();
@@ -227,14 +222,15 @@ export default {
     });
 
     onMounted(() => {
+      getUserLocation()
       initMap();
     });
 
     return {
       store,
 
-      toggleLocation,
-      removeStores,
+      Goto,
+      getUserLocation,
     };
   },
 };
