@@ -43,10 +43,10 @@ export default {
         console.log("user location: ", lat.value, lng.value);
         map.value.setZoom(15);
         map.value.panTo([lat.value, lng.value]);
-        // L.marker([lat.value, lng.value], { icon: red.value })
-        //   .addTo(map.value)
-        //   .bindPopup("您在這裡")
-        //   .openPopup();
+        L.marker([lat.value, lng.value], { icon: red.value })
+          .addTo(map.value)
+          .bindPopup("您在這裡")
+          .openPopup();
       });
     };
 
@@ -89,11 +89,15 @@ export default {
     };
 
     const initMap = () => {
-      map.value = L.map("map", {
-        // center: [store.state.lat, store.state.lng],
-        center: [lat.value, lng.value],
-        zoom: zoom.value,
-        maxZoom: 18,
+      navigator.geolocation.getCurrentPosition((pos) => {
+        lat.value = pos.coords.latitude;
+        lng.value = pos.coords.longitude;
+
+        map.value = L.map("map", {
+          center: [lat.value, lng.value],
+          zoom: zoom.value,
+          maxZoom: 18,
+        });
       });
 
       setIcon();
@@ -222,7 +226,7 @@ export default {
     });
 
     onMounted(() => {
-      getUserLocation()
+      getUserLocation();
       initMap();
     });
 
