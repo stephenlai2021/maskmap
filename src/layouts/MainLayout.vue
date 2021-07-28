@@ -11,7 +11,7 @@
           @click="toggleDrawer"
         />
 
-        <q-toolbar-title @click="router.push('/mypage')">口罩地圖</q-toolbar-title>
+        <q-toolbar-title>口罩地圖</q-toolbar-title>
 
         <q-icon name="img:/icons/about2.png" class="about" />
       </q-toolbar>
