@@ -270,7 +270,7 @@ export default {
   // border: 1px solid red;
   width: 35px;
   height: 35px;
-  opacity: .7;
+  opacity: 0.7;
   position: fixed;
   bottom: 20px;
   right: 20px;
