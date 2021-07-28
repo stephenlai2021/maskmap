@@ -96,8 +96,9 @@
           placeholder="請輸入藥局名稱"
           v-model="search"
         >
-          <template v-slot:append>           
-            <q-icon name="search" class="search-icon" />
+          <template v-slot:append>     
+             <span class="material-icons"> gps_fixed </span>      
+            <!-- <q-icon name="search" class="search-icon" /> -->
           </template>
         </q-input>
       </div>

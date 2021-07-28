@@ -1,10 +1,10 @@
 <template>
   <div>
-    <!-- <q-btn @click="Goto" label="Go" /> -->
-    <q-btn>
-      <span class="material-icons location"> gps_fixed </span>
-    </q-btn>
-    <q-btn @click="getUserLocation" label="您的位置" />
+    <q-icon
+      name="img:/icons/gps.png"
+      class="location"
+      @click="getUserLocation"
+    />
     <div id="map" :style="{ left: store.state.drawer ? '150px' : '0px' }"></div>
   </div>
 </template>
@@ -45,17 +45,10 @@ export default {
     const getUserLocation = () => {
       console.log("user location: ", lat.value, lng.value);
 
-      // map.value.removeLayer(me.value);
-
       map.value.setZoom(12);
       map.value.flyTo([lat.value, lng.value]);
-      // me.value = L.marker([lat.value, lng.value], { icon: red.value })
-      //   .addTo(map.value)
-      //   .bindPopup("您在這裡")
-      //   .openPopup();
     };
 
-    /* 方法 */
     const Goto = () => {
       map.value.setZoom(18);
       // map.value.panTo([store.state.pharmacy.lat, store.state.pharmacy.lng]);
@@ -261,7 +254,6 @@ export default {
 
     return {
       store,
-
       Goto,
       getUserLocation,
     };
@@ -272,16 +264,18 @@ export default {
 <style lang="scss" scoped>
 #map {
   position: fixed;
-  top: 100px;
+  top: 50px;
   width: 100%;
   height: 100vh;
 }
 .location {
-  border: 1px solid red;
+  // border: 1px solid red;
   width: 30px;
   height: 30px;
-}
-.leaflet-popup-content-wrapper {
-  width: 200px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  cursor: pointer;
 }
 </style>
