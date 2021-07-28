@@ -270,8 +270,9 @@ export default {
 }
 .location {
   // border: 1px solid red;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
+  opacity: .7;
   position: fixed;
   bottom: 20px;
   right: 20px;
