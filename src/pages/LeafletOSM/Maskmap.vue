@@ -1,17 +1,23 @@
 <template>
   <div>
-    <q-btn @click="Goto" label="Go" />
+    <!-- <q-btn @click="Goto" label="Go" /> -->
+    <q-btn>
+      <span class="material-icons location"> gps_fixed </span>
+    </q-btn>
     <q-btn @click="getUserLocation" label="您的位置" />
     <div id="map" :style="{ left: store.state.drawer ? '150px' : '0px' }"></div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, inject, watch, watchEffect, computed } from "vue";
+import { ref, watch, inject, onMounted, onUpdated } from "vue";
 
 export default {
-  setup() {
+  props: ["item"],
+  setup(props) {
     const store = inject("store");
+
+    console.log("passed data: ", props.item);
 
     /* 初始化地圖和圖層 */
     const map = ref(null);
@@ -27,7 +33,8 @@ export default {
     const icon = ref(null);
 
     /* 其他變數 */
-    const zoom = ref(11);
+    const zoom = ref(7);
+    const zoomControl = ref(null);
 
     /* 台北市復興南路二段148巷10號 */
     // const lat = ref(25.028528);
@@ -38,9 +45,11 @@ export default {
     const getUserLocation = () => {
       console.log("user location: ", lat.value, lng.value);
 
-      // map.value.setZoom(15);
-      // map.value.panTo([lat.value, lng.value]);
-      // L.marker([lat.value, lng.value], { icon: red.value })
+      // map.value.removeLayer(me.value);
+
+      map.value.setZoom(12);
+      map.value.flyTo([lat.value, lng.value]);
+      // me.value = L.marker([lat.value, lng.value], { icon: red.value })
       //   .addTo(map.value)
       //   .bindPopup("您在這裡")
       //   .openPopup();
@@ -48,40 +57,48 @@ export default {
 
     /* 方法 */
     const Goto = () => {
-      console.log("get pharmcy in map: ", store.state.pharmacy);
-
-      // removeAllMarkers();
-
       map.value.setZoom(18);
-      map.value.panTo([store.state.pharmacy.lat, store.state.pharmacy.lng]);
+      // map.value.panTo([store.state.pharmacy.lat, store.state.pharmacy.lng]);
+      map.value.panTo([
+        store.state.pharmacy.geometry.coordinates[1],
+        store.state.pharmacy.geometry.coordinates[0],
+      ]);
 
       pharmacy.value = L.marker([
-        store.state.pharmacy.lat,
-        store.state.pharmacy.lng,
+        store.state.pharmacy.geometry.coordinates[1],
+        store.statepharmacy.geometry.coordinates[0],
       ])
         .addTo(map.value)
         .bindPopup(
           `
             <q-card-section>
               <div class="text-h6 text-cyan-8">
-                ${store.state.pharmacy.name}
+                ${store.state.pharmacy.properties.name}
               </div>
               <div class="text-primary">
-                ${store.state.pharmacy.address} (${store.state.pharmacy.cunli})
+                ${store.state.pharmacy.properties.address} (${store.state.pharmacy.properties.cunli})
               </div>
               <div class="text-primary q-mt-sm">
-                ${store.state.pharmacy.phone}
+                ${store.state.pharmacy.properties.phone}
               </div>
             </q-card-section>
 
             <div class="q-mt-md flex justify-around q-py-sm rounded-borders">
-              <span class="text-cyan-8 text-h6">成人 ${store.state.pharmacy.maskAdult}</span>
-              <span class="text-cyan-8 text-h6">兒童 ${store.state.pharmacy.maskChild}</span>
+              <span class="text-cyan-8 text-h6">成人 ${store.state.pharmacy.properties.mask_adult}</span>
+              <span class="text-cyan-8 text-h6">兒童 ${store.state.pharmacy.properties.mask_child}</span>
             </div>
 
           `
         )
         .openPopup();
+    };
+
+    const setControl = () => {
+      zoomControl.value = L.control
+        .zoom({
+          position: "topright",
+        })
+        .addTo(map.value);
     };
 
     const initMap = () => {
@@ -94,8 +111,10 @@ export default {
             center: [lat.value, lng.value],
             zoom: zoom.value,
             maxZoom: 18,
+            zoomControl: false,
           });
 
+          setControl();
           setIcon();
 
           me.value = L.marker([lat.value, lng.value], { icon: red.value })
@@ -103,9 +122,7 @@ export default {
             .bindPopup("您的位置")
             .openPopup();
 
-          group.value = L.markerClusterGroup();
           addStores();
-          map.value.addLayer(group.value);
 
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution:
@@ -118,6 +135,8 @@ export default {
 
     // 增加圖層 (我們可以過濾出想要的藥局, 包塊全省藥局, 城市藥局或區域藥局)
     const addStores = () => {
+      group.value = L.markerClusterGroup();
+
       store.state.api.map((item) => {
         if (
           item.properties.mask_adult <= 200 ||
@@ -132,14 +151,17 @@ export default {
           item.properties.county === store.state.selectedCity &&
           item.properties.town === store.state.selectedArea
         ) {
-          // return (stores.value = (L.marker(
-          return L.marker(
-            [item.geometry.coordinates[1], item.geometry.coordinates[0]],
-            { icon: icon.value }
-          )
-            .addTo(map.value)
-            .bindPopup(
-              `
+          // return (stores.value = group.value.addLayer(L.marker(
+          return group.value.addLayer(
+            (stores.value = L.marker(
+              // return L.marker(
+              [item.geometry.coordinates[1], item.geometry.coordinates[0]],
+              { icon: icon.value }
+            )
+              // .addTo(map.value)
+              .openPopup()
+              .bindPopup(
+                `
               <q-card-section>
                 <div class="text-h6 text-cyan-8">
                   ${item.properties.name}
@@ -158,10 +180,11 @@ export default {
               </div>
 
             `
-            );
+              ))
+          );
         }
       });
-      // .forEach((item) => group.value.addLayer(item));
+      map.value.addLayer(group.value);
     };
 
     const setIcon = () => {
@@ -202,23 +225,39 @@ export default {
     };
 
     const updateMap = () => {
-      removeAllMarkers();
-      addAreaStores();
+      // removeAllMarkers();
+      map.value.removeLayer(group.value);
+      map.value.addLayer(me.value);
+      addStores();
     };
 
-    watchEffect(() => {
-      store.methods.getSelectedStores();
-      console.log(
-        `watch effect in map: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
-      );
+    // watch(() => store.state.selectedArea, (newVal, oldVal) => {
+    watch(
+      () => [store.state.selectedCity, store.state.selectedArea],
+      ([newA, newB], [oldA, oldB]) => {
+        console.log(`您選擇了: ${newA}${newB}`);
 
-      console.log("watch pharmacy in map: ", store.state.pharmacy);
-    });
+        updateMap();
+      }
+    );
+
+    watch(
+      () => [store.state.lat, store.state.lng],
+      ([newA, newB], [oldA, oldB]) => {
+        console.log("新座標: ", newA, newB);
+
+        updateMap();
+
+        map.value.setZoom(18);
+        map.value.flyTo([store.state.lat, store.state.lng]);
+      }
+    );
 
     onMounted(() => {
       initMap();
-      getUserLocation();
     });
+
+    onUpdated(() => {});
 
     return {
       store,
@@ -237,7 +276,12 @@ export default {
   width: 100%;
   height: 100vh;
 }
+.location {
+  border: 1px solid red;
+  width: 30px;
+  height: 30px;
+}
 .leaflet-popup-content-wrapper {
-  width: 250px;
+  width: 200px;
 }
 </style>

@@ -20,7 +20,6 @@
     <q-drawer
       style="overflow: hidden"
       v-model="store.state.drawer"
-      show-if-above
       :breakpoint="400"
     >
       <q-img
@@ -61,7 +60,11 @@
         </div>
 
         <div class="area-select">
-          <select v-model="store.state.selectedArea" class="bg-teal-2" @change="updateMap">
+          <select
+            v-model="store.state.selectedArea"
+            class="bg-teal-2"
+            @change="updateMap"
+          >
             <option
               v-for="(area, idx) in filteredArea"
               :value="area.AreaName"
@@ -85,28 +88,42 @@
             ></path>
           </svg>
         </div>
-      </div>
-      <q-scroll-area class="area">
-        <!-- <div v-if="store.state.filteredStoreNo"> -->
-        <div v-if="store.methods.getSelectedStores()">
-          <div class="text-h5 text-center">
-            找到 {{ store.state.filteredStoreNo }} 家藥局
-          </div>
 
+        <q-input
+          class="search bg-teal-2"
+          outlined
+          borderless
+          placeholder="請輸入藥局名稱"
+          v-model="search"
+        >
+          <template v-slot:append>           
+            <q-icon name="search" class="search-icon" />
+          </template>
+        </q-input>
+      </div>
+
+      <q-scroll-area class="area">
+        <div v-if="filteredStores.length">
+          <div class="text-h5 text-center">
+            找到 {{ filteredStores.length }} 家藥局
+          </div>
           <q-card
             class="my-card text-white"
-            v-for="(store, idx) in store.methods.getSelectedStores()"
+            v-for="(item, idx) in filteredStores"
             :key="idx"
           >
             <q-card-section>
-              <div class="text-h6 text-cyan-8 store-name" @click="getStore(store)">
-                {{ store.name }}
+              <div
+                class="text-h6 text-cyan-8 store-name"
+                @click="getStore(item)"
+              >
+                {{ item.properties.name }}
               </div>
               <div class="text-subtitle2 text-primary">
-                {{ store.address }} ({{ store.cunli }})
+                {{ item.properties.address }} ({{ item.properties.cunli }})
               </div>
               <div class="text-subtitle2 text-primary q-mt-sm">
-                {{ store.phone }}
+                {{ item.properties.phone }}
               </div>
             </q-card-section>
 
@@ -114,16 +131,18 @@
               <span
                 class="mask-amount q-py-xs rounded-borders"
                 :style="{
-                  background: store.maskAdult === 0 ? 'grey' : '#0097a7',
+                  background:
+                    item.properties.maskAdult === 0 ? 'grey' : '#0097a7',
                 }"
-                >成人 {{ store.maskAdult }}</span
+                >成人 {{ item.properties.maskAdult }}</span
               >
               <span
                 class="mask-amount q-py-xs rounded-borders"
                 :style="{
-                  background: store.maskChild === 0 ? 'grey' : '#0097a7',
+                  background:
+                    item.properties.maskChild === 0 ? 'grey' : '#0097a7',
                 }"
-                >兒童 {{ store.maskChild }}</span
+                >兒童 {{ item.properties.maskChild }}</span
               >
             </q-card-actions>
           </q-card>
@@ -150,15 +169,19 @@ export default {
     const router = useRouter();
 
     const drawer = ref(false);
-    const data = ref([]);   
+    const data = ref([]);
+    const search = ref("");
 
     const getStore = (item) => {
-      store.state.pharmacy = item
-      console.log('pharmcy | store: ', store.state.pharmacy)
+      store.state.lat = item.geometry.coordinates[1];
+      store.state.lng = item.geometry.coordinates[0];
 
-      // store.state.drawer = false
-      // console.log('drawer state: ', store.state.drawer)
-    }
+      store.state.pharmacy = item;
+
+      console.log("您選擇了: ", item.properties.name);
+      console.log("緯度: ", store.state.lat);
+      console.log("經度", store.state.lng);
+    };
 
     const setSelectedArea = () => {
       store.state.selectedArea = filteredArea.value[0].AreaName;
@@ -194,12 +217,6 @@ export default {
       store.state.drawer = !store.state.drawer;
     };
 
-    const updateMap = () => {
-      console.log(
-        `layout: ${store.state.selectedCity}${store.state.selectedArea}, 共有${store.state.filteredStoreNo}家藥局`
-      );
-    }
-
     onMounted(() => {
       // getUserLocation()
     });
@@ -211,6 +228,7 @@ export default {
       drawer,
       cities,
       data,
+      search,
 
       filteredArea,
       filteredStores,
@@ -218,7 +236,6 @@ export default {
       setSelectedArea,
       toggleDrawer,
       getStore,
-      updateMap,
     };
   },
 };
@@ -226,16 +243,32 @@ export default {
 
 <style lang="scss" scoped>
 .area {
-  height: calc(100% - 60px);
-  // border: 1px solid green;
-  padding-top: 0;
+  height: calc(100% - 160px);
+  // border: 1px solid red;
+  margin-top: 25px;
+  padding-top: 1rem;
   border-right: 1px solid #ddd;
   display: flex;
   justify-content: center;
-  padding-top: 1rem;
+}
+.q-field__control {
+  height: 38px;
+  // outline: none;
+}
+.search {
+  position: relative;
+  margin: 0 5%;
+  font-size: 15px;
+  border-radius: 4px;
+  border: none;
+  // appearance: none;
+
+  // height: 45px;
 }
 .city-select,
 .area-select {
+  width: 40%;
+  display: inline-block;
   margin: 1rem 5%;
   position: relative;
 
@@ -243,7 +276,7 @@ export default {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 18px;
+    top: 9px;
     right: 12px;
     color: rgba(0, 0, 0, 0.6);
   }
@@ -251,12 +284,11 @@ export default {
   select {
     appearance: none;
     background: rgba(0, 0, 0, 0.05);
-    // background: white;
     border: none;
-    padding: 12px;
-    font-size: 16px;
+    padding: 8px 12px;
+    font-size: 15px;
     color: rgba(0, 0, 0, 0.6);
-    height: 56px;
+    // height: 46px;
     width: 100%;
     border-radius: 4px;
 
