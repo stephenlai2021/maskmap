@@ -13,8 +13,6 @@ export default {
     const api =
       "https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json";
 
-    const { data } = useFetch(api);    
-
     const fetchAPI = () => {
       fetch(api)
         .then((res) => res.json())
@@ -23,10 +21,8 @@ export default {
         });
     };
 
-    onMounted(() => {
-      store.state.api = data;
-      
-      // fetchAPI()
+    onMounted(() => {      
+      fetchAPI()
     });
   },
 };

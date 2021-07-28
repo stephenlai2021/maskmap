@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-cyan-8">
       <q-toolbar>
         <q-btn
@@ -8,24 +8,55 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleDrawer"
+          @click="toggleLeftDrawer"
         />
 
         <q-toolbar-title>口罩地圖</q-toolbar-title>
 
-        <q-icon name="img:/icons/about2.png" class="about" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="person"
+          side="left"
+          @click="toggleRightDrawer"
+        />
       </q-toolbar>
     </q-header>
 
     <q-drawer
       style="overflow: hidden"
-      v-model="store.state.drawer"
+      v-model="store.state.rightDrawer"
+      side="right"
+      :breakpoint="400"
+      bordered
+    >
+      <q-img
+        class="absolute-top"
+        src="https://cdn.quasar.dev/img/material.png"
+        style="height: 150px"
+      >
+        <div class="absolute-bottom bg-transparent">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img
+              src="https://i1.wp.com/pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
+            />
+          </q-avatar>
+          <div class="text-weight-bold">stephenlai2015</div>
+          <div class="">@gmail.com</div>
+        </div>
+      </q-img>
+    </q-drawer>
+
+    <q-drawer
+      style="overflow: hidden"
+      v-model="store.state.leftDrawer"
       :breakpoint="400"
     >
       <q-img
         class="absolute-top"
         src="https://cdn.quasar.dev/img/material.png"
-        style="height: 160px"
+        style="height: 125px"
       ></q-img>
 
       <div class="user-select">
@@ -89,18 +120,49 @@
           </svg>
         </div>
 
-        <q-input
+        <!-- <q-input
           class="search bg-teal-2"
           outlined
           borderless
           placeholder="請輸入藥局名稱"
           v-model="search"
         >
-          <template v-slot:append>     
-             <span class="material-icons"> gps_fixed </span>      
-            <!-- <q-icon name="search" class="search-icon" /> -->
+          <template v-slot:append>
+            <span class="material-icons search-icon">search</span>
           </template>
-        </q-input>
+        </q-input> -->
+        <div
+          class="q-field__control relative-position row no-wrap search"
+          tabindex="-1"
+        >
+          <div
+            class="
+              q-field__control-container
+              col
+              relative-position
+              row
+              no-wrap
+              q-anchor--skip
+              bg-teal-2
+            "
+          >
+            <input
+              class="q-field__native q-placeholder bg-teal-2 search-box"
+              tabindex="0"
+              placeholder="請輸入藥局名稱"
+              id="f_09bbdf2b-41ae-4220-99a8-f326e23de05d"
+              type="text"
+              ref="searchBox"
+            />
+          </div>
+          <div
+            class="q-field__append q-field__marginal row bg-teal-2 no-wrap items-center"
+          >
+            <span @click="getFocus" class="material-icons search-icon bg-teal-2" data-v-18ca20c2=""
+              >search</span
+            >
+          </div>
+        </div>
       </div>
 
       <q-scroll-area class="area">
@@ -173,11 +235,13 @@ export default {
     const data = ref([]);
     const search = ref("");
 
+    const searchBox = ref(null)
+
     const getStore = (item) => {
       store.state.lat = item.geometry.coordinates[1];
       store.state.lng = item.geometry.coordinates[0];
 
-      store.state.drawer = false
+      store.state.leftDrawer = false;
 
       store.state.pharmacy = item;
 
@@ -208,17 +272,20 @@ export default {
       });
 
       return area;
-
-      // return cities.filter(item => {
-      //   return item.CityName === store.state.selectedCity && item.AreaList.filter(area => {
-      //     return area.AreaName === store.state.setSelectedArea
-      //   })
-      // })
     });
 
-    const toggleDrawer = () => {
-      store.state.drawer = !store.state.drawer;
+    const toggleLeftDrawer = () => {
+      store.state.leftDrawer = !store.state.leftDrawer;
     };
+
+    const toggleRightDrawer = () => {
+      store.state.rightDrawer = !store.state.rightDrawer;
+    };
+
+    const getFocus = () => {
+      // document.getElementsByClassName('search-box').focus()
+      // searchBox.value.focus()
+    }
 
     onMounted(() => {
       // getUserLocation()
@@ -237,8 +304,10 @@ export default {
       filteredStores,
 
       setSelectedArea,
-      toggleDrawer,
+      toggleLeftDrawer,
+      toggleRightDrawer,
       getStore,
+      getFocus,
     };
   },
 };
@@ -248,15 +317,11 @@ export default {
 .area {
   height: calc(100% - 160px);
   // border: 1px solid red;
-  margin-top: 25px;
+  margin-top: 15px;
   padding-top: 1rem;
   border-right: 1px solid #ddd;
   display: flex;
   justify-content: center;
-}
-.q-field__control {
-  height: 38px;
-  // outline: none;
 }
 .search {
   position: relative;
@@ -303,10 +368,31 @@ export default {
 .store-name {
   cursor: pointer;
 }
+.search-icon {
+  // border: 1px solid red;
+  position: absolute;
+  right: 10px;
+}
 .about {
   width: 35px;
   height: 35px;
-  opacity: .7;
+  opacity: 0.7;
   cursor: pointer;
+}
+.q-field__control-container {
+  padding-left: 12px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.q-field__append {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.q-field__control,
+.q-field__append,
+.q-field__native {
+  // border: 1px solid red;
+  height: 38px;
+
 }
 </style>

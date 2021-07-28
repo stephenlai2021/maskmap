@@ -4,7 +4,8 @@ const state = reactive({
   api: [],
   pharmacies: null,
 
-  drawer: false,
+  leftDrawer: false,
+  rightDrawer: false,
 
   storeNo: 0,
   stores: [],

@@ -14,10 +14,8 @@ import { ref, watch, inject, onMounted, onUpdated } from "vue";
 
 export default {
   props: ["item"],
-  setup(props) {
+  setup() {
     const store = inject("store");
-
-    console.log("passed data: ", props.item);
 
     /* 初始化地圖和圖層 */
     const map = ref(null);
@@ -45,12 +43,12 @@ export default {
     const getUserLocation = () => {
       console.log("user location: ", lat.value, lng.value);
 
-      map.value.setZoom(12);
+      map.value.setZoom(16);
       map.value.flyTo([lat.value, lng.value]);
     };
 
     const Goto = () => {
-      map.value.setZoom(18);
+      map.value.setZoom(16);
       // map.value.panTo([store.state.pharmacy.lat, store.state.pharmacy.lng]);
       map.value.panTo([
         store.state.pharmacy.geometry.coordinates[1],
