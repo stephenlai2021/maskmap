@@ -11,9 +11,9 @@
           @click="toggleDrawer"
         />
 
-        <q-toolbar-title @click="router.push('/mypage')"
-          >口罩地圖</q-toolbar-title
-        >
+        <q-toolbar-title @click="router.push('/mypage')">口罩地圖</q-toolbar-title>
+
+        <q-icon name="img:/icons/about2.png" class="about" />
       </q-toolbar>
     </q-header>
 
@@ -177,6 +177,8 @@ export default {
       store.state.lat = item.geometry.coordinates[1];
       store.state.lng = item.geometry.coordinates[0];
 
+      store.state.drawer = false
+
       store.state.pharmacy = item;
 
       console.log("您選擇了: ", item.properties.name);
@@ -299,6 +301,12 @@ export default {
   }
 }
 .store-name {
+  cursor: pointer;
+}
+.about {
+  width: 35px;
+  height: 35px;
+  opacity: .7;
   cursor: pointer;
 }
 </style>
