@@ -239,7 +239,7 @@ export default {
 
         updateMap();
 
-        map.value.setZoom(18);
+        map.value.setZoom(16);
         map.value.flyTo([store.state.lat, store.state.lng]);
       }
     );
@@ -247,8 +247,6 @@ export default {
     onMounted(() => {
       initMap();
     });
-
-    onUpdated(() => {});
 
     return {
       store,

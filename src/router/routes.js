@@ -5,6 +5,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('src/pages/LeafletOSM/Maskmap.vue') },
+      // { path: '', component: () => import('src/pages/Practice/PracticePage.vue') },
     ]
   },
 

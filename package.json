@@ -1,8 +1,8 @@
 {
-  "name": "temp",
+  "name": "maskmap",
   "version": "0.0.1",
-  "description": "temp",
-  "productName": "Temp",
+  "description": "mask shop where you find detailed info about the mask amount",
+  "productName": "Maskmap",
   "author": "stephenlaichaowen <stephenlaitest@gmail.com>",
   "private": true,
   "scripts": {
@@ -13,10 +13,12 @@
     "bootstrap": "^5.0.2",
     "core-js": "^3.6.5",
     "firebase": "^8.7.1",
-    "quasar": "^2.0.0"
+    "quasar": "^2.0.0",
+    "vue-i18n": "^9.1.7"
   },
   "devDependencies": {
-    "@quasar/app": "^3.0.0"
+    "@quasar/app": "^3.0.0",
+    "workbox-webpack-plugin": "^6.1.5"
   },
   "browserslist": [
     "last 10 Chrome versions",
