@@ -249,6 +249,8 @@ export default {
         // map.value.maxZoom = 18
         // map.value.flyTo([store.state.lat, store.state.lng]);
 
+        // removeAllMarkers()
+
         Goto();
       }
     );
