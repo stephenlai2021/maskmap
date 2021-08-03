@@ -315,7 +315,7 @@ export default {
 
 <style lang="scss" scoped>
 .area {
-  height: calc(100% - 160px);
+  height: calc(100vh - 160px);
   // border: 1px solid red;
   margin-top: 15px;
   padding-top: 1rem;

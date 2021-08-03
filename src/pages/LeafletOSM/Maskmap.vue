@@ -44,23 +44,28 @@ export default {
       console.log("user location: ", lat.value, lng.value);
 
       map.value.setZoom(18);
-      map.value.maxZoom = 18
-      map.value.flyTo([lat.value, lng.value]);
+      map.value.maxZoom = 18;
+      map.value.panTo([lat.value, lng.value]);
+
+      me.value.bindPopup("您在這裡").openPopup();
     };
 
     const Goto = () => {
       map.value.setZoom(18);
-      map.value.maxZoom = 18
+      map.value.maxZoom = 18;
 
-      map.value.panTo([
-        store.state.lat,
-        store.state.lng,
-      ]);
+      // if (
+      //   store.state.pharmacy.mask_adult <= 200 ||
+      //   store.state.pharmacy.mask_child <= 200
+      // ) {
+      //   icon.value = grey.value;
+      // } else {
+      //   icon.value = green.value;
+      // }
 
-      pharmacy.value = L.marker([
-        store.state.lat,
-        store.state.lng,
-      ])
+      map.value.panTo([store.state.lat, store.state.lng]);
+
+      pharmacy.value = L.marker([store.state.lat, store.state.lng])
         .addTo(map.value)
         .bindPopup(
           `
@@ -243,7 +248,8 @@ export default {
         // map.value.setZoom(18);
         // map.value.maxZoom = 18
         // map.value.flyTo([store.state.lat, store.state.lng]);
-        Goto()
+
+        Goto();
       }
     );
 
