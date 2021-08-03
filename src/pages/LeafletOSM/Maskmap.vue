@@ -221,7 +221,7 @@ export default {
       map.value.addLayer(me.value);
       addStores();
     };
-    
+
     watch(
       () => [store.state.selectedCity, store.state.selectedArea],
       ([newA, newB], [oldA, oldB]) => {
@@ -238,7 +238,8 @@ export default {
 
         updateMap();
 
-        map.value.setZoom(16);
+        map.value.setZoom(18);
+        map.value.maxZoom = 18
         map.value.flyTo([store.state.lat, store.state.lng]);
       }
     );
