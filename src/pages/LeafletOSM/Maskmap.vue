@@ -221,8 +221,7 @@ export default {
       map.value.addLayer(me.value);
       addStores();
     };
-
-    // watch(() => store.state.selectedArea, (newVal, oldVal) => {
+    
     watch(
       () => [store.state.selectedCity, store.state.selectedArea],
       ([newA, newB], [oldA, oldB]) => {
