@@ -6,7 +6,8 @@
   "author": "stephenlaichaowen <stephenlaitest@gmail.com>",
   "private": true,
   "scripts": {
-    "push": "git add . && git commit -m commit && git push origin master"
+    "push": "git add . && git commit -m commit && git push origin master",
+    "icons": "icongenie generate -i mask1024.png --skip-trim --theme-color 0097a7"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

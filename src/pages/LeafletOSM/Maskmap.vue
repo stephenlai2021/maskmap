@@ -5,17 +5,60 @@
       class="location"
       @click="getUserLocation"
     />
+
     <div id="map" :style="{ left: store.state.drawer ? '150px' : '0px' }"></div>
+
+    <transition
+      appear
+      enter-active-class="animated slideInUp"
+      leave-active-class="animated slideOutDown"
+    >
+      <q-banner inline-actions class="text-white" v-if="showAppInstallBanner">
+        <template v-slot:avatar>
+          <q-avatar
+            size="md"
+            color="red"
+            text-color="white"
+            icon="directions"
+          />
+        </template>
+        <b>Install Maskmap ?</b>
+        <template v-slot:action>
+          <q-btn @click="installApp" flat label="Yes" dense class="q-px-sm" />
+          <q-btn
+            @click="showAppInstallBanner = false"
+            flat
+            label="Later"
+            dense
+            class="q-px-sm"
+          />
+          <q-btn
+            @click="neverShowAppInstallBanner"
+            flat
+            label="Never"
+            dense
+            class="q-px-sm"
+          />
+        </template>
+      </q-banner>
+    </transition>
   </div>
 </template>
 
 <script>
-import { ref, watch, inject, onMounted, onUpdated } from "vue";
+let deferredPrompt;
+
+import { useQuasar } from "quasar";
+import { ref, watch, inject, onMounted } from "vue";
 
 export default {
   props: ["item"],
   setup() {
     const store = inject("store");
+
+    const $q = useQuasar();
+
+    const showAppInstallBanner = ref(false);
 
     /* 初始化地圖和圖層 */
     const map = ref(null);
@@ -255,14 +298,55 @@ export default {
       }
     );
 
+    const neverShowAppInstallBanner = () => {
+      showAppInstallBanner.value = false;
+
+      $q.localStorage.set("neverShowAppInstallBanner", true);
+    };
+
+    const installApp = () => {
+      showAppInstallBanner.value = false;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((result) => {
+        if (result.outcome === "accepted") {
+          console.log("User accepted the install prompt");
+          neverShowAppInstallBanner();
+        } else {
+          console.log("User dismissed the install prompt");
+        }
+      });
+    };
+
     onMounted(() => {
       initMap();
+
+      /* 
+      - 當用戶點擊 'NEVER', 在 localStorage 做紀錄, 此時安裝提示消失; 重整網頁安裝提示也不會顯示
+      - 刪除 localStorage 紀錄, 重整網頁, 安裝提示再度出現
+      */
+      let neverShowAppInstallBanner = $q.localStorage.getItem(
+        "neverShowAppInstallBanner"
+      );
+
+      if (!neverShowAppInstallBanner) {
+        window.addEventListener("beforeinstallprompt", (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+
+          setTimeout(() => {
+            showAppInstallBanner.value = true;
+          }, 2000)
+        });
+      }
     });
 
     return {
       store,
+      showAppInstallBanner,
       Goto,
       getUserLocation,
+      installApp,
+      neverShowAppInstallBanner,
     };
   },
 };
@@ -285,5 +369,15 @@ export default {
   right: 20px;
   z-index: 200;
   cursor: pointer;
+}
+.q-banner {
+  background: #0097a7;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 300;
+}
+.container {
+  // max-width: 720px;
 }
 </style>
