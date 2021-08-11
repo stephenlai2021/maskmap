@@ -198,17 +198,17 @@
                 class="mask-amount q-py-xs rounded-borders"
                 :style="{
                   background:
-                    item.properties.maskAdult === 0 ? 'grey' : '#0097a7',
+                    item.properties.mask_adult === 0 ? 'grey' : '#0097a7',
                 }"
-                >成人 {{ item.properties.maskAdult }}</span
+                >成人 {{ item.properties.mask_adult }}</span
               >
               <span
                 class="mask-amount q-py-xs rounded-borders"
                 :style="{
                   background:
-                    item.properties.maskChild === 0 ? 'grey' : '#0097a7',
+                    item.properties.mask_child === 0 ? 'grey' : '#0097a7',
                 }"
-                >兒童 {{ item.properties.maskChild }}</span
+                >兒童 {{ item.properties.mask_child }}</span
               >
             </q-card-actions>
           </q-card>
