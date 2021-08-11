@@ -371,7 +371,8 @@ export default {
   cursor: pointer;
 }
 .q-banner {
-  background: #0097a7;
+  // background: #0097a7;
+  background: #212121;
   position: fixed;
   bottom: 0;
   width: 100%;

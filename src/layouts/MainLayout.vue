@@ -1,6 +1,7 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-cyan-8">
+  <!-- <q-layout view="hHh lpR fFf"> -->
+  <q-layout view="lHh lpr lff">
+    <q-header elevated class="">
       <q-toolbar>
         <q-btn
           flat
@@ -11,7 +12,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>口罩地圖</q-toolbar-title>
+        <q-toolbar-title>
+          <img src="/mask3.png" alt="" style="width: 35px; height: 35px; margin-top: 5px">
+        </q-toolbar-title>
 
         <q-btn
           flat
@@ -39,7 +42,7 @@
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
             <img
-              src="https://i1.wp.com/pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png"
+              src="/me.png"
             />
           </q-avatar>
           <div class="text-weight-bold">stephenlai2015</div>
@@ -315,7 +318,7 @@ export default {
 
 <style lang="scss" scoped>
 .area {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 125px);
   // border: 1px solid red;
   margin-top: 15px;
   padding-top: 1rem;
@@ -393,6 +396,8 @@ export default {
 .q-field__native {
   // border: 1px solid red;
   height: 38px;
-
+}
+.q-header {
+  background: #212121;
 }
 </style>

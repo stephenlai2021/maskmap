@@ -126,6 +126,67 @@ pwa: {
 
 ### Enable Precache
 
+---
+
+## PWA - Caching Strategies
+
+### Introduction
+
+- Stale While Revalidate
+- Cache First
+- Network First
+- Network Only
+- Cache Only
+
+---
+
+## Background Sync 
+
+__What is Background Sync ?__
+It makes our app fully functional offline
+
+---
+
+## Push Notifications
+
+### How Push Notification Work
+
+- Get Notifications Permission
+- Create a Push Subscription 
+  - associated with particular browser such as chrome, firefox, etc.
+- Store Subscriptions in Database
+  - Unique Keys
+  - Unique Push Server URL
+- Backend to Loop Through Subscriptions
+- Use Service Worker to listen for Push Messages
+- Display the Notification
+- Listen for Notification Click
+- Bring user back to our app
+- Protect our Push Notifications with Unique Keys
+
+### Notifications & Push Notifications
+
+__Notifications__
+- Notifications Permission required
+- Can be displayed anytime we like, but only when user is using the app
+- Can be triggered in our app's JavaScript code
+- Minimal Requirements: No need for subscriptions, backends or push servers
+
+__Push Notifications__
+- Notifications Permission required
+- Sent to all of our subscribed users at once
+- Displayed anytime, even if the user is not using the app
+- Complex Requirements:
+  - Push Subscription for each user
+  - Database to Store Subscriptions
+  - Backend to Send Push Messages
+
+### Create an "Enable Notifications" Banner
+
+
+
+
+
 
 
 
