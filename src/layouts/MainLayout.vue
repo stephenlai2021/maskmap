@@ -13,7 +13,7 @@
         />
 
         <q-toolbar-title>
-          <img src="/mask3.png" alt="" style="width: 35px; height: 35px; margin-top: 5px">
+          <img src="/mask.png" alt="" style="width: 40px; height: 40px; margin-top: 5px">
         </q-toolbar-title>
 
         <q-btn
